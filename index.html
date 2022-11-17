@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Weather App</title>
+
+        <script src="https://kit.fontawesome.com/bf1fc3c749.js" crossorigin="anonymous"></script>
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.1/font/bootstrap-icons.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/styles.css">
+      
+      
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;400;500;900&family=Ubuntu:wght@300;400;700&display=swap" rel="stylesheet">
+      
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <style>
+            body {
+    background-image: linear-gradient(to bottom, #3B3486, #59C1BD);
+    color: azure;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.tempInfo {
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.temprature {
+    padding: auto;  
+}
+
+.aqi {
+    background-color: #81a8fc;
+    padding-top: 10px;
+    border-radius: 20px;
+    padding-bottom: 10px;
+    border: none;
+}
+
+.information {
+    background-color: #81a8fc;
+    padding-top: 10px;
+    border-radius: 20px;
+    padding-bottom: 10px;
+    border: none;
+}
+
+.offcanvas {
+    color: black;
+}
+
+.searchLocation {
+    background-color: #D6E4E5;
+    border-radius: 20px;
+    border: none;
+}
+
+.unitHeader {
+    color: #a8babb;
+}
+
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row mt-5">
+                <div class="col-md-4 col-xl-4">
+                    <div class="addLocation d-flex justify-content-start">
+                        <a href="#addLocationOffCanvas" data-bs-toggle="offcanvas" role="button" style="color: white;">
+                            <i class="bi bi-plus-lg"></i>
+                        </a>
+                        <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="true" tabindex="-1" id="addLocationOffCanvas" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                              <h2 class="offcanvas-title" id="offcanvasExampleLabel">Add Location</h2>
+                              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                                <form action="#">
+                                    <div class="input-group searchLocation">
+                                        <span class="input-group-text searchLocation"><i class="bi bi-search"></i></span>
+                                        <input type="text" class="form-control searchLocation" placeholder="Username">
+                                      </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xl-4">
+                    <div class="currentLocation d-flex justify-content-center">
+                        <h3>{%LocationCity%}, {%Country%}</h3>
+                    </div>
+                </div>
+                <div class="col-md-4 col-xl-4">
+                    <div class="menu d-flex justify-content-end">
+                        <a href="#settings" data-bs-toggle="offcanvas" role="button" style="color: white;">
+                            <i class="bi bi-three-dots-vertical"></i>
+                        </a>
+                        <div class="offcanvas offcanvas-end" tabindex="-1" id="settings" aria-labelledby="offcanvasExampleLabel">
+                            <div class="offcanvas-header">
+                              <h2 class="offcanvas-title" id="offcanvasExampleLabel">Settings</h2>
+                              <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                                <div class="row unitHeader">
+                                    <p>Units</p>
+                                </div>
+                                <div class="row pb-5">
+                                    <div class="col-9">
+                                        <h3>Temprature Units</h3>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="dropdown">
+                                            <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"
+                                            style="font-size: 15px; color: #a8babb; text-decoration: none;">
+                                                <span>&#8451;</span>
+                                            </a>                                         
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                              <li>
+                                                <a class="dropdown-item" href="#">
+                                                    <span style="font-size: 15px;color: black; text-decoration: none;">
+                                                        &#8451;
+                                                    </span>
+                                                </a>
+                                              </li>
+                                              <li>
+                                                <a class="dropdown-item" href="#">
+                                                    <span style="font-size: 15px;color: black; text-decoration: none;">
+                                                        &#8457;
+                                                    </span>
+                                                </a>
+                                              </li>
+                                            </ul>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="row pb-5">
+                                    <div class="col-9">
+                                        <h3>Pressure Units</h3>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="dropdown">
+                                            <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"
+                                            style="font-size: 15px; color: #a8babb; text-decoration: none;">
+                                                <p>Hectopascal (hPa)</p>
+                                            </a>                                         
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                              <li><a class="dropdown-item" href="#" style="font-size: 15px;color: black; text-decoration: none;">Hectopascal (hPa)</a></li>
+                                              <li><a class="dropdown-item" href="#" style="font-size: 15px;color: black; text-decoration: none;">Millibar (mbar)</a></li>
+                                              <li><a class="dropdown-item" href="#" style="font-size: 15px;color: black; text-decoration: none;">Millimeter of mercury (mmHg)</a></li>
+                                              <li><a class="dropdown-item" href="#" style="font-size: 15px;color: black; text-decoration: none;">Inch of mercury (inHg)</a></li>
+                                              <li><a class="dropdown-item" href="#" style="font-size: 15px;color: black; text-decoration: none;">Standard atmosphere (atm)</a></li>
+                                            </ul>
+                                          </div>
+                                    </div>
+                                </div>
+                                <div class="row pb-3">
+                                    <div class="col-9">
+                                        <h3>Wind Speed Units</h3>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="dropdown">
+                                            <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"
+                                            style="font-size: 15px; color: #a8babb; text-decoration: none;">
+                                                <p>Kilometers per hour (km/h)</p>
+                                            </a>                                         
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                              <li><a class="dropdown-item" href="#" style="font-size: 15px;color: black; text-decoration: none;">Kilometers per hour (km/h)</a></li>
+                                              <li><a class="dropdown-item" href="#" style="font-size: 15px;color: black; text-decoration: none;">Meters per second (m/s)</a></li>
+                                              <li><a class="dropdown-item" href="#" style="font-size: 15px;color: black; text-decoration: none;">Miles per hour (mph)</a></li>
+                                              <li><a class="dropdown-item" href="#" style="font-size: 15px;color: black; text-decoration: none;">Knots (kn)</a></li>
+                                            </ul>
+                                          </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row unitHeader">
+                                    <p>Other Settings</p>
+                                </div>
+                                <div class="row pb-3">
+                                    <div class="col-9">
+                                        <h3>Sound effects</h3>
+                                        <p style="font-size: 15px; color: #a8babb;">Accompany weather changes by sound effects</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="dropdown">
+                                            <a href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false"
+                                            style="font-size: 15px; color: #a8babb; text-decoration: none;">
+                                                <p>On</p>
+                                            </a>                                         
+                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                              <li><a class="dropdown-item" href="#" style="font-size: 15px;color: black; text-decoration: none;">On</a></li>
+                                              <li><a class="dropdown-item" href="#" style="font-size: 15px;color: black; text-decoration: none;">Off</a></li>
+                                            </ul>
+                                          </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-4">
+                    <div class="tempInfo">
+                        <div class="row weather">
+                            <div class="d-flex justify-content-center">
+                                <i class="fa-sharp fa-solid fa-sun" style="color: yellow;"></i>
+                            </div>
+                        </div>
+                        <div class="row temprature pb-2">
+                            <div class="d-flex justify-content-center">
+                                <h1 style="font-size: 100px;">{%Temperature%}<span style="font-size: 25px;">&#8451;</span></h1>
+                            </div>
+                        </div>
+                        <div class="row weatherCondition pb-1">
+                            <div class="d-flex justify-content-center">
+                                <p id="DateTimeInfo">Date | Day | Time |{%Cloulds%}</p>
+                            </div>
+                        </div>
+                        <div class="row aqi">
+                            <div class="d-flex justify-content-center">
+                                <a href="#" style="color: white; text-decoration: none;">AQI</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="information">
+                <div class="row">
+                    <div class="col-md-4 col-xl-4">
+                        <div class="row">
+                            <div class="d-flex justify-content-center">
+                                <p class="minMax">MIN | MAX:</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="d-flex justify-content-center">
+                                <h5 style="font-size: 25px;">{%MinTemp%}<span style="font-size: 25px;">&#8451;</span> | {%MaxTemp%}<span style="font-size: 25px;">&#8451;</span></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xl-4">
+                        <div class="row">
+                            <div class="d-flex justify-content-center">
+                                <p>Humidity</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="d-flex justify-content-center">
+                                <h5 style="font-size: 25px;">{%Humidity%}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xl-4">
+                        <div class="row">
+                            <div class="d-flex justify-content-center">
+                                <p>Wind Speed</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="d-flex justify-content-center">
+                                <h5 style="font-size: 25px;">{%WindSpeed%}</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-5">
+                    <div class="col-md-4 col-xl-4">
+                        <div class="row">
+                            <div class="d-flex justify-content-center">
+                                <p class="minMax">Feels Like</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="d-flex justify-content-center">
+                                <h5 style="font-size: 25px;">{%FeelsLike%}<span style="font-size: 25px;">&#8451;</span></h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xl-4">
+                        <div class="row">
+                            <div class="d-flex justify-content-center">
+                                <p>Pressure</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="d-flex justify-content-center">
+                                <h5 style="font-size: 25px;">{%Pressure%}</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-xl-4">
+                        <div class="row">
+                            <div class="d-flex justify-content-center">
+                                <p>UV Index</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="d-flex justify-content-center">
+                                <h5 style="font-size: 25px;">3</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-8 col-xl-8">
+                    <div class="d-flex justify-content-center mt-3">
+                        <p>Data provided by <a href="https://openweathermap.org/" style="color: white;">OpenWeather</a></p> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            const currentDate = document.getElementById("DateTimeInfo");
+
+const getCurrentDay = (() => {
+
+    const weekdays = [
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+    ];
+
+    const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec"
+    ];    
+
+    var now = new Date();
+    var month = months[now.getMonth()];
+    var day = now.getDate();
+    var weekday = weekdays[now.getDay()];
+
+    var hour = now.getHours();
+    var mins = now.getMinutes();
+
+    let period = "AM";
+
+    if (hour > 11) {
+        period = "PM"
+        
+        if (hour > 12) {
+            hour -= 12;
+        }
+    }
+    if (mins < 10) {
+        mins = "0" + mins;
+    }
+
+    return `${day}th ${month} | ${weekday} | ${hour}:${mins}${period}`;
+    // console.log(`${day}th ${month} | ${weekday} | ${hour}:${mins}${period}`);
+
+});
+
+currentDate.innerHTML = getCurrentDay();
+        </script>
+    </body>
+</html>
